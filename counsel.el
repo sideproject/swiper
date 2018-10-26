@@ -1265,9 +1265,7 @@ Typical value: '(recenter)."
        (setq line-number (match-string-no-properties 2 x)))
       ((string-match "\\` \\([0-9]+\\)\\(.*\\)\\'" x)
        (setq line-number (match-string-no-properties 1 x))
-       (with-current-buffer ivy--occur-press-orig-buffer
-         (re-search-backward "^file: \\(.*\\)$")
-         (setq file-name (match-string-no-properties 1)))))
+       (setq file-name (get-text-property 0 'file x))))
     (find-file (expand-file-name
                 file-name
                 (ivy-state-directory ivy-last)))
@@ -2596,8 +2594,10 @@ CALLER is forwarded to `ivy-read'."
         (unless (string= current-file (car-safe current-line))
           (setq current-file (car-safe current-line))
           (insert "file: " current-file "\n"))
-        (insert (counsel-ag--display-match (cadr current-line)
-                                           (caddr current-line))
+        (insert (propertize
+                 (counsel-ag--display-match (cadr current-line)
+                                            (caddr current-line))
+                 'file current-file)
                 "\n")
         (incf count)))
     (goto-char (point-min))
