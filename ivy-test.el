@@ -916,6 +916,12 @@ will bring the behavior in line with the newer Emacsen."
                (ivy-with-temp-buffer '(counsel-yank-pop) "C-m")
                '(1 "foo"))))))
 
+(ert-deftest counsel-ag--split-match ()
+  (should (equal (counsel-ag--split-match "ivy.el:4134:(defun counsel-ag--split-match (candidate)")
+                 '("ivy.el"
+                   "4134"
+                   "(defun counsel-ag--split-match (candidate)"))))
+
 (provide 'ivy-test)
 
 ;;; ivy-test.el ends here
