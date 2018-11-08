@@ -357,7 +357,7 @@ action functions.")
     (define-key map [remap backward-kill-word] 'ivy-backward-kill-word)
     (define-key map [remap delete-char] 'ivy-delete-char)
     (define-key map [remap forward-char] 'ivy-forward-char)
-    (define-key map (kbd "<right>") 'ivy-forward-char)
+    ;;(define-key map (kbd "<right>") 'ivy-forward-char) ;;cb removed
     (define-key map [remap kill-word] 'ivy-kill-word)
     (define-key map [remap beginning-of-buffer] 'ivy-beginning-of-buffer)
     (define-key map [remap end-of-buffer] 'ivy-end-of-buffer)
@@ -2689,7 +2689,9 @@ Possible choices are 'ivy-magic-slash-non-match-cd-selected,
 
 (defun ivy--magic-file-slash ()
   "Handle slash when completing file names."
-  (when (or (and (eq this-command 'self-insert-command)
+  (when (or
+         (eq this-command 'right-char) ;;cb added
+         (and (eq this-command 'self-insert-command)
                  (eolp))
             (eq this-command 'ivy-partial-or-done))
     (cond ((member ivy-text ivy--all-candidates)
